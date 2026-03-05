@@ -1,19 +1,26 @@
-// @ts-check
 import { test, expect } from '@playwright/test';
+import dotenv from 'dotenv';
 
-test('has title', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+// Load environment variables from .env file
+dotenv.config();
 
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/);
-});
+const baseURL = process.env.APP_BASE_URL;
+const username = process.env.APP_USERNAME;
+const password = process.env.APP_PASSWORD;
 
 test('get started link', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+  // Navigate to the URL
+  await page.goto(baseURL);
 
-  // Click the get started link.
-  await page.getByRole('link', { name: 'Get started' }).click();
+  // Fill username
+  await page.locator("#username").fill(username);
 
-  // Expects page to have a heading with the name of Installation.
-  //await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
+  // Fill password
+  await page.locator("#password").fill(password);
+
+  // Optional: Click login button 
+   await page.locator("#signInBtn").click();
+
+  // Optional: Verify login success
+  // await expect(page).toHaveURL('https://www.example.com/dashboard');
 });
